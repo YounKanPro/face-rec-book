@@ -1,0 +1,321 @@
+<html>
+    <head>
+      <title>Video Streaming Demonstration</title>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+      <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+      <script src="/static/js/jquery-3.2.1.min.js"></script>
+      <style media="screen">
+        body{
+          font-family: 'Varela Round', sans-serif;
+          /* padding: 45px 0; */
+        }
+        h1{
+          text-align: center;
+          font-size: 60px;
+          color: #ffffff;
+        }
+        .vdo-stream {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          width: 80%;
+          height: auto;
+        }
+        .vdo-box{
+          display: flex;
+          padding: 5px 0 50px 0;
+        }
+        .message{
+          width: 100%;
+          border: 1px solid #34909ee6;
+          /* height: 10%; */
+          -webkit-box-shadow: -1px 2px 36px 3px rgba(67,117,114,0.69);
+          -moz-box-shadow: -1px 2px 36px 3px rgba(67,117,114,0.69);
+          box-shadow: -1px 2px 36px 3px rgba(67,117,114,0.69);
+        }
+        .messcards{
+          width: 100%;
+          height: 400px;
+          /* text-align: center; */
+          overflow-y: scroll;
+          overflow-x: hidden;
+        }
+        .card{
+          padding: 10px;
+          border-radius: 10px;
+          margin: 5px 0;
+          border-style: solid;
+          border-color: #4BB5D9;
+        }
+        .card-box{
+          margin: 5px 0;
+        }
+        .messcards .col-12{
+          padding:5px;
+        }
+        .card-body{
+          font-size: 15px;
+        }
+        .rating-star{
+          height: 35px;
+          padding: 0px 5px;
+          margin-top: 13px;
+        }
+        .banner{
+          background-color: #3796BF;
+          padding: 15px 0;
+        }
+        .container{
+          padding: 50px 50px 25px 50px;
+        }
+        .tab-bar{
+          background-color: #3796BF;
+          border-radius: 20px 20px 0 0;
+          padding: 5px 0 0 0;
+        }
+        .tab-button{
+          background-color: #3796BF;
+          border-radius: 15px 15px 0 0;
+          border: 5px;
+          border-color: #ffffff;
+          margin: 0 0 0 5px;
+          font-family: 'Varela Round', sans-serif;
+          font-size: 20px;
+          color: #ffffff;
+          padding: 10px 35px;
+        }
+        .tab-button:hover {
+          background-color: #076b96;
+          color: #ffffff;
+        }
+        .selected-button{
+          background-color: #ffffff;
+          color: #3796BF;
+        }
+        .box{
+          background-color: #3796BF;
+          border-radius: 20px;
+          padding: 0 0 1px 0;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          width: 100%;
+          height:auto;
+        }
+        .inner-box{
+          background-color: #ffffff;
+          margin: 0 5px 5px 5px;
+          padding: 10px;
+          border-radius: 0 0 15px 15px;
+        }
+        .inner-box h2 {
+          font-size: 30px;
+          color: #3796BF;
+        }
+        .img-book{
+          height: 95px;
+          width : "auto";
+        }
+        /* ----- unknown face ----- */
+        .rec-box{
+          padding: 0 0 0 30px;
+        }
+        .dropbtn {
+          background-color: #4CAF50;
+          color: white;
+          padding: 16px;
+          font-size: 16px;
+          width: 230px;
+          border-color: #3796BF;
+          border-radius: 15px;
+          margin: 5px;
+        }
+        .dropdown {
+          display: inline-block;
+        }
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #f1f1f1;
+          min-width: 400px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+        }
+        .dropdown-content a {
+          color: black;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+        }
+        .dropdown-content a:hover {background-color: #ddd;}
+        .dropdown:hover .dropdown-content {display: block;}
+        .dropdown:hover .dropbtn {background-color: #3e8e41;}
+        .list-group{
+          max-height: 200px;
+          margin-bottom: 10px;
+          overflow:scroll;
+          -webkit-overflow-scrolling: touch;
+        }
+        @media (min-width: 1300px){
+          .container {
+              width: 1685px;
+          }
+          .vdo-stream {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            height:auto;
+          }
+        }
+        @media (min-width: 1200px){
+          .container {
+              width: 1400px;
+          }
+          .vdo-stream {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            height:auto;
+          }
+        }
+      </style>
+    </head>
+
+    <body>
+      <div class="banner">
+        <h1>Recommendation System</h1>
+      </div>
+      <div class="container">
+        <div class="col-lg-6 col-md-12 vdo-box">
+          <img id="bg" class="vdo-stream" src="/video_feed" >
+        </div>
+          <div class="col-lg-6 col-md-12 content-box"></div>
+      </div>
+    </body>
+
+    <script>
+      function openTab(evt, cityName) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("city");
+        for (i = 0; i < x.length; i++) {
+          x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" selected-button", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " selected-button";
+      }
+    </script>
+    <script type="text/javascript">
+      function ratingStar(stars) {
+        allStars = ""
+        for(var i = 0; i < stars; i++){
+          var checkhalf = ((stars - (i+1)) === 0.5);
+            allStars += '<img class="rating-star" src="/static/image/star.png" >'
+          if(checkhalf){
+            allStars += '<img class="rating-star" src="/static/image/star2.png" >'
+            return allStars;
+          }  
+        }
+        return allStars;
+      }
+
+      function getListcontent(tagbook) {
+        var strList = ""
+        for(var j = 0; j < tagbook.length; j++){
+                var book = tagbook[j];
+                strList += '<a href="#">\
+                '+book.title+'\
+                </a>'
+                }
+        return strList;
+      }
+
+      var btnstatus = new Array(10).fill(false);
+      function submitButtonStyle(_this,id,tagid) {
+        btnstatus[id] = ((btnstatus[id] === false)? true:false);
+        if(btnstatus[id]){
+        _this.style.backgroundColor = "red";
+        
+        $.get('/select',{'tag_id': tagid})
+        .done(function(data){
+          console.log(data);
+        })
+
+        }else{
+        _this.style.backgroundColor = "#4CAF50";
+        }
+       
+      }
+
+      var source = new EventSource("/live-data");
+      source.onmessage = function(event) {
+        var jsonData = JSON.parse(event.data);
+        var databooks = jsonData.databooks;
+        var tagbooks = jsonData.booktags;
+        var face = jsonData.face;
+        var recbox = ""
+
+        console.log(event.data);
+        $(".content-box").empty();
+        if(face == "select"){
+          var hoverf = ""
+          for (var i = 0; i < tagbooks.length; i++) {
+            var tag = tagbooks[i];
+            var hoverf = '<div class="dropdown col-md-6">\
+              <button onclick="submitButtonStyle(this,'+i+','+tag.tag_id+')" type="submit" class="dropbtn">\
+              '+tag.tag_name+'\
+              </button>\
+              <div class="dropdown-content">\
+                <ul class="list-group">\
+                  <li class="list-group-item">\
+                            <div class="media">'
+                hoverf += getListcontent(tag.books);
+                hoverf += '</div></li></ul></div></div>'
+            $(".content-box").append(hoverf);
+          }
+        }else{
+
+        recbox = '<div class="rec-box">\
+            <div class="box">\
+              <div class="tab-bar">\
+                <button class="tab-button tablink selected-button" onclick="openTab(event,\'Recommend\')">Recommend</button>\
+                <button class="tab-button tablink" onclick="openTab(event,\'History\')">History</button>\
+              </div>\
+              <div id="Recommend" class="inner-box city">\
+                <h2>Your Recommendation :</h2>\
+                <div class="messcards">'
+      
+        for (var i = 0; i < databooks.length; i++) {
+            var book = databooks[i];
+            recbox += '<div class="card col-sm-12 col-md-12 col-lg-12">\
+                        <div class=".col-sm-2 col-md-2 col-lg-2">\
+                            <img class="img-book" src="'+book.img+'" alt="'+book.img+'">\
+                        </div>\
+                        <div class="card-box col-sm-10 col-md-10 col-lg-10">\
+                          <div class="card-body">\
+                            '+book.title+'\
+                          </div>\
+                          <div>\
+                            '+ratingStar(book.rating)+'\
+                          </div>\
+                        </div>\
+                      </div>'
+        }
+        recbox += '</div></div>\
+            <div id="History" class="inner-box city" style="display:none">\
+              <h2>Purchase History :</h2>\
+              <p>Paris is the capital of France.</p> \
+            </div></div></div>'
+        $(".content-box").append(recbox);
+      
+        }
+      };   
+    </script>
+  </html>
